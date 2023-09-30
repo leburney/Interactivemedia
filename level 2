@@ -1,0 +1,80 @@
+int numRooms = 8; // Number of rooms
+Room[] rooms = new Room[numRooms]; // Array to store room data
+int selectedRoom = -1; // Currently selected room (-1 means none selected)
+
+void setup() {
+  size(800, 600); // Set the canvas size
+  noLoop();
+
+  // Initialize room data (x, y, width, height, label)
+  rooms[0] = new Room(50, 100, 100, 100, "Classroom 101");
+  rooms[1] = new Room(200, 100, 100, 100, "Classroom 102");
+  rooms[2] = new Room(350, 100, 100, 100, "Meeting Room");
+  rooms[3] = new Room(50, 300, 100, 100, "Lecture Hall 1");
+  rooms[4] = new Room(200, 300, 100, 100, "Lecture Hall 2");
+  rooms[5] = new Room(350, 300, 100, 100, "Library");
+  rooms[6] = new Room(500, 100, 100, 100, "Restroom");
+  rooms[7] = new Room(650, 100, 100, 100, "Stairs");
+}
+
+void draw() {
+  background(240); // Set background color to light gray
+  
+  // Draw building outline
+  noFill();
+  stroke(0);
+  rect(50, 50, 700, 500);
+  
+  // Draw rooms
+  for (int i = 0; i < numRooms; i++) {
+    rooms[i].display();
+    
+    // Check if mouse is inside the room
+    if (rooms[i].isMouseInside(mouseX, mouseY)) {
+      selectedRoom = i;
+    }
+  }
+  
+  // Display selected room information
+  fill(0);
+  textAlign(CENTER);
+  textSize(18);
+  if (selectedRoom >= 0) {
+    text("Selected Room: " + rooms[selectedRoom].label, width / 2, height - 30);
+  }
+}
+
+void mouseMoved() {
+  // Reset selected room when mouse moves
+  selectedRoom = -1;
+}
+
+class Room {
+  float x, y, w, h;
+  String label;
+  
+  Room(float x, float y, float w, float h, String label) {
+    this.x = x;
+    this.y = y;
+    this.w = w;
+    this.h = h;
+    this.label = label;
+  }
+  
+  void display() {
+    // Draw room rectangle
+    stroke(0);
+    fill(200);
+    rect(x, y, w, h);
+    
+    // Draw room label
+    fill(0);
+    textAlign(CENTER);
+    textSize(16);
+    text(label, x + w / 2, y + h / 2);
+  }
+  
+  boolean isMouseInside(float mx, float my) {
+    return mx > x && mx < x + w && my > y && my < y + h;
+  }
+}
